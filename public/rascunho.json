@@ -1,0 +1,19 @@
+{
+  "name" : Repository.name,
+  "children": [
+    {
+      "name" : KalibroModule.long_name ("até o primeiro ponto")
+      "children" : KalibroModule.long_name ("mais algum ponto?") [
+        {"name": NOME DA MÉTRICA????,
+          "value": TreeMetricResult.value ou MetricResult.value
+            WHERE KalibroModule.module_result_id == MetricResult.module_result_id,
+          "grade": ??},
+        {"name": NOME DA MÉTRICA????,
+          "value": TreeMetricResult.value ou MetricResult.value
+            WHERE KalibroModule.module_result_id == MetricResult.module_result_id,
+          "grade": ??},
+        {...}
+      ] 
+    }
+  ]
+}
