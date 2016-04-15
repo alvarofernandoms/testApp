@@ -44,10 +44,10 @@
               "name": "core",
               "children": [
                 {
-                  "name": "animation",
+                  "name": "mousebuttonevent",
                   "children": [
                     {
-                      "name": "Animation",
+                      "name": "MouseButtonEvent",
                       "children": [
                         {"name": "Afferent Connections per Class", "value": 2.0},
                         {"name": "Average Cyclomatic Complexity per Method", "value": 1.5},
@@ -77,10 +77,10 @@
               "name": "core",
               "children": [
                 {
-                  "name": "animation",
+                  "name": "level",
                   "children": [
                     {
-                      "name": "Animation",
+                      "name": "Level",
                       "children": [
                         {"name": "Afferent Connections per Class", "value": 9.0},
                         {"name": "Average Cyclomatic Complexity per Method", "value": 1.00},
