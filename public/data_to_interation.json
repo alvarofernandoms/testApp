@@ -1,0 +1,74 @@
+{
+  "name": "IJE",
+  "children": [
+    {
+      "name": "engine",
+      "children": [
+        {
+          "name": "include",
+          "children": [
+            {
+              "name": "core",
+              "children": [
+                {
+                  "name": "animation",
+                  "children": [
+                    {
+                      "name": "Animation",
+                      "children": [
+                        {"name": "Afferent Connections per Class", "value": "ZERO"},
+                        {"name": "Average Cyclomatic Complexity per Method", "value": 1.67},
+                        {"name": "Average Method Lines of Code", "value": 7.89},
+                        {"name": "Average Number of Parameters per Method", "value": 1.33},
+                        {"name": "Depth of Inheritance Tree", "value": "ZERO"},
+                        {"name": "Number of Methods", "value": 9.0},
+                        {"name": "Number of Public Attributes", "value": 1.0},
+                        {"name": "Structural Complexity", "value": "ZERO"}
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "name": "mousebuttonevent",
+                  "children": [
+                    {
+                      "name": "MouseButtonEvent",
+                      "children": [
+                        {"name": "Afferent Connections per Class", "value": 2.0},
+                        {"name": "Average Cyclomatic Complexity per Method", "value": 1.5},
+                        {"name": "Average Method Lines of Code", "value": 7.33},
+                        {"name": "Average Number of Parameters per Method", "value": 0.83},
+                        {"name": "Depth of Inheritance Tree", "value": "ZERO"},
+                        {"name": "Number of Methods", "value": 6.0},
+                        {"name": "Number of Public Attributes", "value": "ZERO"},
+                        {"name": "Structural Complexity", "value": 54.0}
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "name": "level",
+                  "children": [
+                    {
+                      "name": "Level",
+                      "children": [
+                        {"name": "Afferent Connections per Class", "value": 9.0},
+                        {"name": "Average Cyclomatic Complexity per Method", "value": 1.00},
+                        {"name": "Average Method Lines of Code", "value": 4.00},
+                        {"name": "Average Number of Parameters per Method", "value": 0.6},
+                        {"name": "Depth of Inheritance Tree", "value": 1.0},
+                        {"name": "Number of Methods", "value": 5.0},
+                        {"name": "Number of Public Attributes", "value": "ZERO"},
+                        {"name": "Structural Complexity", "value": 54.00}
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

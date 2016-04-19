@@ -65,7 +65,6 @@ d3.json("data_to_node_link_tree.json", function(error, root) {
       .data(links)
     .enter().append("path")
       .attr("d", diagonal);
-      //.attr("class", (function(links) {return links.value > 5 ? "green" : "red link " + links.value}));
 
   link.data(nodes)
       .attr("class", (function(d) {
@@ -73,10 +72,6 @@ d3.json("data_to_node_link_tree.json", function(error, root) {
         else if (d.value < 10 || d.value == "ZERO") {return "green " + d.value;}
         else {return "link " + d.value;}
       }));
-
-
-
-      //{return d.value > 5.0 && d.value != "Undefined" ? "green" + d.value  : "red " + d.value}));
 
   var node = svg.selectAll(".node")
       .data(nodes)
