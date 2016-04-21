@@ -5,6 +5,9 @@ Rails.application.routes.draw do
   # You can have the root of your site routed with "root"
   # root 'static#index'
   get '/', :to => redirect('/index')
+  get 'radar_chart', :to => redirect('/radar_chart')
+  get 'node_link_tree', :to => redirect('/node_link_tree')
+  get 'node_link_with_interation', :to => redirect('/node_link_with_interation')
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
