@@ -33,3 +33,10 @@ bower.json
 
 # Ignore pow environment settings
 .powenv
+
+.rbenv-vars
+
+/public/assets/*
+
+/config/unicorn.rb
+/shared/*

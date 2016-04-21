@@ -45,3 +45,8 @@ group :development do
   gem 'spring'
 end
 
+# PostgreSQL integration
+gem 'pg'
+
+# HTTP server unicorn
+gem 'unicorn'
