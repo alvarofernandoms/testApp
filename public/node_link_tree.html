@@ -3,122 +3,110 @@
 <title>Visualizations Test - Node Link Tree</title>
 <!-- jQuery import from googleapis -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
-
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-
 <!-- Optional theme -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
-
 <!-- Latest compiled and minified JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 <style>
-
-.node circle {
-  fill: #fff;
-  stroke: steelblue;
-  stroke-width: 1.5px;
-}
-
-.node {
-  font: 10px sans-serif;
-}
-
-.link {
-  fill: none;
-  stroke: #ccc;
-  stroke-width: 1.5px;
-}
-
-.green {
-  fill: none;
-  stroke: green;
-  stroke-witdh: 2px;
-}
-
-.red {
-  fill: none;
-  stroke: red;
-  stroke-witdh: 2px;
-}
-
-svg {
-  padding: 51px 0px 0px 170px;
-}
-
+  .node circle {
+    fill: #fff;
+    stroke: steelblue;
+    stroke-width: 1.5px;
+  }
+  .node {
+    font: 10px sans-serif;
+  }
+  .link {
+    fill: none;
+    stroke: #ccc;
+    stroke-width: 1.5px;
+  }
+  .green {
+    fill: none;
+    stroke: green;
+    stroke-witdh: 2px;
+  }
+  .red {
+    fill: none;
+    stroke: red;
+    stroke-witdh: 2px;
+  }
+  svg {
+    padding: 51px 0px 0px 170px;
+  }
 </style>
 <body>
   <nav class="navbar navbar-default navbar-static-top">
-  <div class="container">
-    <a href="https://github.com/alvarofernandoms/visualizationsTest"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/a6677b08c955af8400f44c6298f40e7d19cc5b2d/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677261795f3664366436642e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png"></a>
-    <a class="navbar-brand" href="/">Visualization Test</a>
-    <ul class="nav navbar-nav navbar-left">
-      <li class="dropdown">
+    <div class="container">
+      <a href="https://github.com/alvarofernandoms/visualizationsTest"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/a6677b08c955af8400f44c6298f40e7d19cc5b2d/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677261795f3664366436642e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png"></a>
+      <a class="navbar-brand" href="/">Visualization Test</a>
+      <ul class="nav navbar-nav navbar-left">
+        <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Available <span class="caret"></span></a>
           <ul class="dropdown-menu">
             <li><a href="radar_chart">Random Radar Chart by Thomas Preusse (adapted)</a></li>
             <li><a href="node_link_tree">Node Link Tree by Mike Bostock (adapted)</a></li>
             <li><a href="node_link_with_interation">Node Link With Interation by Lars Kotthoff (adapted)</a></li>
           </ul>
-      </li>
+        </li>
       </ul>
     </div>
   </nav>
+  <script src="../d3/d3.js"></script>
+  <script>
+    var diameter = 960;
 
-<script src="../d3/d3.js"></script>
-<script>
+    var tree = d3.layout.tree()
+        .size([360, diameter / 2 - 120])
+        .separation(function(a, b) { return (a.parent == b.parent ? 1 : 2) / a.depth; });
 
-var diameter = 960;
+    var diagonal = d3.svg.diagonal.radial()
+        .projection(function(d) { return [d.y, d.x / 180 * Math.PI]; });
 
-var tree = d3.layout.tree()
-    .size([360, diameter / 2 - 120])
-    .separation(function(a, b) { return (a.parent == b.parent ? 1 : 2) / a.depth; });
+    var svg = d3.select("body").append("svg")
+        .attr("width", diameter + 220)
+        .attr("height", diameter + 150)
+        .append("g")
+        .attr("transform", "translate(" + diameter / 2 + "," + diameter / 2 + ")")
+        .attr("class", "main-content");
 
-var diagonal = d3.svg.diagonal.radial()
-    .projection(function(d) { return [d.y, d.x / 180 * Math.PI]; });
+    d3.json("data_to_node_link_tree.json", function(error, root) {
+      if (error) throw error;
 
-var svg = d3.select("body").append("svg")
-    .attr("width", diameter + 220)
-    .attr("height", diameter + 150)
-  .append("g")
-    .attr("transform", "translate(" + diameter / 2 + "," + diameter / 2 + ")")
-    .attr("class", "main-content");
+      var nodes = tree.nodes(root),
+          links = tree.links(nodes);
 
-d3.json("data_to_node_link_tree.json", function(error, root) {
-  if (error) throw error;
+      var link = svg.selectAll(".link")
+          .data(links)
+        .enter().append("path")
+          .attr("d", diagonal);
 
-  var nodes = tree.nodes(root),
-      links = tree.links(nodes);
+      link.data(nodes)
+          .attr("class", (function(d) {
+            if (d.value > 10) {return "red " + d.value;}
+            else if (d.value < 10 || d.value == "ZERO") {return "green " + d.value;}
+            else {return "link " + d.value;}
+          }));
 
-  var link = svg.selectAll(".link")
-      .data(links)
-    .enter().append("path")
-      .attr("d", diagonal);
+      var node = svg.selectAll(".node")
+          .data(nodes)
+        .enter().append("g")
+          .attr("class", "node")
+          .attr("transform", function(d) { return "rotate(" + (d.x - 90) + ")translate(" + d.y + ")"; })
 
-  link.data(nodes)
-      .attr("class", (function(d) {
-        if (d.value > 10) {return "red " + d.value;}
-        else if (d.value < 10 || d.value == "ZERO") {return "green " + d.value;}
-        else {return "link " + d.value;}
-      }));
+      node.append("circle")
+          .attr("r", 4.5);
 
-  var node = svg.selectAll(".node")
-      .data(nodes)
-    .enter().append("g")
-      .attr("class", "node")
-      .attr("transform", function(d) { return "rotate(" + (d.x - 90) + ")translate(" + d.y + ")"; })
+      node.append("text")
+          .attr("dy", ".31em")
+          .attr("text-anchor", function(d) { return d.x < 180 ? "start" : "end"; })
+          .attr("transform", function(d) { return d.x < 180 ? "translate(8)" : "rotate(180)translate(-8)"; })
+          .text(function(d) { return d.value ? d.name + " = " + d.value : d.name; });
 
-  node.append("circle")
-      .attr("r", 4.5);
+    });
 
-  node.append("text")
-      .attr("dy", ".31em")
-      .attr("text-anchor", function(d) { return d.x < 180 ? "start" : "end"; })
-      .attr("transform", function(d) { return d.x < 180 ? "translate(8)" : "rotate(180)translate(-8)"; })
-      .text(function(d) { return d.value ? d.name + " = " + d.value : d.name; });
+    d3.select(self.frameElement).style("height", diameter - 150 + "px");
 
-});
-
-d3.select(self.frameElement).style("height", diameter - 150 + "px");
-
-</script>
+  </script>

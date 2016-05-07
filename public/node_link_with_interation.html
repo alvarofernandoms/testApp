@@ -4,208 +4,199 @@
     <title>Visualizations Test - Node Link With Interarion</title>
     <!-- jQuery import from googleapis -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
-
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-
     <!-- Optional theme -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
-
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
     <script src="../d3/d3.js"></script>
     <style type="text/css">
-
-.node rect {
-  cursor: pointer;
-  fill: #fff;
-  fill-opacity: .5;
-  stroke: #3182bd;
-  stroke-width: 1.5px;
-}
-
-.node text {
-  font: 10px sans-serif;
-  pointer-events: none;
-}
-
-path.link {
-  fill: none;
-  stroke: #9ecae1;
-  stroke-width: 1.5px;
-}
-
+      .node rect {
+        cursor: pointer;
+        fill: #fff;
+        fill-opacity: .5;
+        stroke: #3182bd;
+        stroke-width: 1.5px;
+      }
+      .node text {
+        font: 10px sans-serif;
+        pointer-events: none;
+      }
+      path.link {
+        fill: none;
+        stroke: #9ecae1;
+        stroke-width: 1.5px;
+      }
     </style>
-</head>
-<body>
-  <nav class="navbar navbar-default navbar-static-top">
-  <div class="container">
-    <a href="https://github.com/alvarofernandoms/visualizationsTest"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/a6677b08c955af8400f44c6298f40e7d19cc5b2d/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677261795f3664366436642e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png"></a>
-    <a class="navbar-brand" href="/">Visualization Test</a>
-    <ul class="nav navbar-nav navbar-left">
-      <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Available <span class="caret"></span></a>
-          <ul class="dropdown-menu">
-            <li><a href="radar_chart">Random Radar Chart by Thomas Preusse (adapted)</a></li>
-            <li><a href="node_link_tree">Node Link Tree by Mike Bostock (adapted)</a></li>
-            <li><a href="node_link_with_interation">Node Link With Interation by Lars Kotthoff (adapted)</a></li>
-          </ul>
-      </li>
-      </ul>
-    </div>
-  </nav>
+  </head>
+  <body>
+    <nav class="navbar navbar-default navbar-static-top">
+      <div class="container">
+        <a href="https://github.com/alvarofernandoms/visualizationsTest"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/a6677b08c955af8400f44c6298f40e7d19cc5b2d/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677261795f3664366436642e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png"></a>
+        <a class="navbar-brand" href="/">Visualization Test</a>
+        <ul class="nav navbar-nav navbar-left">
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Available <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="radar_chart">Random Radar Chart by Thomas Preusse (adapted)</a></li>
+              <li><a href="node_link_tree">Node Link Tree by Mike Bostock (adapted)</a></li>
+              <li><a href="node_link_with_interation">Node Link With Interation by Lars Kotthoff (adapted)</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <div class="container">
+      <div class="jumbotron">
+        <div id="chart"></div>
+        <script type="text/javascript">
+          var w = 960,
+              h = 800,
+              i = 0,
+              barHeight = 20,
+              barWidth = w * .8,
+              duration = 400,
+              root;
 
-  <div class="container">
-  <div class="jumbotron">
-    <div id="chart"></div>
+          var tree = d3.layout.tree()
+              .size([h, 100]);
 
-<script type="text/javascript">
+          var diagonal = d3.svg.diagonal()
+              .projection(function(d) { return [d.y, d.x]; });
 
-var w = 960,
-    h = 800,
-    i = 0,
-    barHeight = 20,
-    barWidth = w * .8,
-    duration = 400,
-    root;
+          var vis = d3.select("#chart").append("svg:svg")
+              .attr("width", w)
+              .attr("height", h)
+            .append("svg:g")
+              .attr("transform", "translate(20,30)");
 
-var tree = d3.layout.tree()
-    .size([h, 100]);
+          function moveChildren(node) {
+              if(node.children) {
+                  node.children.forEach(function(c) { moveChildren(c); });
+                  node._children = node.children;
+                  node.children = null;
+              }
+          }
 
-var diagonal = d3.svg.diagonal()
-    .projection(function(d) { return [d.y, d.x]; });
+          d3.json("data_to_interation.json", function(json) {
+            json.x0 = 0;
+            json.y0 = 0;
+            moveChildren(json);
+            update(root = json);
+          });
 
-var vis = d3.select("#chart").append("svg:svg")
-    .attr("width", w)
-    .attr("height", h)
-  .append("svg:g")
-    .attr("transform", "translate(20,30)");
+          function update(source) {
 
-function moveChildren(node) {
-    if(node.children) {
-        node.children.forEach(function(c) { moveChildren(c); });
-        node._children = node.children;
-        node.children = null;
-    }
-}
+            // Compute the flattened node list. TODO use d3.layout.hierarchy.
+            var nodes = tree.nodes(root);
 
-d3.json("data_to_interation.json", function(json) {
-  json.x0 = 0;
-  json.y0 = 0;
-  moveChildren(json);
-  update(root = json);
-});
+            // Compute the "layout".
+            nodes.forEach(function(n, i) {
+              n.x = i * barHeight;
+            });
 
-function update(source) {
+            // Update the nodes…
+            var node = vis.selectAll("g.node")
+                .data(nodes, function(d) { return d.id || (d.id = ++i); });
 
-  // Compute the flattened node list. TODO use d3.layout.hierarchy.
-  var nodes = tree.nodes(root);
+            var nodeEnter = node.enter().append("svg:g")
+                .attr("class", "node")
+                .attr("transform", function(d) { return "translate(" + source.y0 + "," + source.x0 + ")"; })
+                .style("opacity", 1e-6);
 
-  // Compute the "layout".
-  nodes.forEach(function(n, i) {
-    n.x = i * barHeight;
-  });
+            // Enter any new nodes at the parent's previous position.
+            nodeEnter.append("svg:rect")
+                .attr("y", -barHeight / 2)
+                .attr("height", barHeight)
+                .attr("width", barWidth)
+                .style("fill", color)
+                .on("click", click);
 
-  // Update the nodes…
-  var node = vis.selectAll("g.node")
-      .data(nodes, function(d) { return d.id || (d.id = ++i); });
+            nodeEnter.append("svg:text")
+                .attr("dy", 3.5)
+                .attr("dx", 5.5)
+                .text(function(d) { return d.value ? d.name + " = " + d.value : d.name; });
 
-  var nodeEnter = node.enter().append("svg:g")
-      .attr("class", "node")
-      .attr("transform", function(d) { return "translate(" + source.y0 + "," + source.x0 + ")"; })
-      .style("opacity", 1e-6);
+            // Transition nodes to their new position.
+            nodeEnter.transition()
+                .duration(duration)
+                .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; })
+                .style("opacity", 1);
 
-  // Enter any new nodes at the parent's previous position.
-  nodeEnter.append("svg:rect")
-      .attr("y", -barHeight / 2)
-      .attr("height", barHeight)
-      .attr("width", barWidth)
-      .style("fill", color)
-      .on("click", click);
+            node.transition()
+                .duration(duration)
+                .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; })
+                .style("opacity", 1)
+              .select("rect")
+                .style("fill", color);
 
-  nodeEnter.append("svg:text")
-      .attr("dy", 3.5)
-      .attr("dx", 5.5)
-      .text(function(d) { return d.value ? d.name + " = " + d.value : d.name; });
+            // Transition exiting nodes to the parent's new position.
+            node.exit().transition()
+                .duration(duration)
+                .attr("transform", function(d) { return "translate(" + source.y + "," + source.x + ")"; })
+                .style("opacity", 1e-6)
+                .remove();
 
-  // Transition nodes to their new position.
-  nodeEnter.transition()
-      .duration(duration)
-      .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; })
-      .style("opacity", 1);
+            // Update the links…
+            var link = vis.selectAll("path.link")
+                .data(tree.links(nodes), function(d) { return d.target.id; });
 
-  node.transition()
-      .duration(duration)
-      .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; })
-      .style("opacity", 1)
-    .select("rect")
-      .style("fill", color);
+            // Enter any new links at the parent's previous position.
+            link.enter().insert("svg:path", "g")
+                .attr("class", "link")
+                .attr("d", function(d) {
+                  var o = {x: source.x0, y: source.y0};
+                  return diagonal({source: o, target: o});
+                })
+              .transition()
+                .duration(duration)
+                .attr("d", diagonal);
 
-  // Transition exiting nodes to the parent's new position.
-  node.exit().transition()
-      .duration(duration)
-      .attr("transform", function(d) { return "translate(" + source.y + "," + source.x + ")"; })
-      .style("opacity", 1e-6)
-      .remove();
+            // Transition links to their new position.
+            link.transition()
+                .duration(duration)
+                .attr("d", diagonal);
 
-  // Update the links…
-  var link = vis.selectAll("path.link")
-      .data(tree.links(nodes), function(d) { return d.target.id; });
+            // Transition exiting nodes to the parent's new position.
+            link.exit().transition()
+                .duration(duration)
+                .attr("d", function(d) {
+                  var o = {x: source.x, y: source.y};
+                  return diagonal({source: o, target: o});
+                })
+                .remove();
 
-  // Enter any new links at the parent's previous position.
-  link.enter().insert("svg:path", "g")
-      .attr("class", "link")
-      .attr("d", function(d) {
-        var o = {x: source.x0, y: source.y0};
-        return diagonal({source: o, target: o});
-      })
-    .transition()
-      .duration(duration)
-      .attr("d", diagonal);
+            // Stash the old positions for transition.
+            nodes.forEach(function(d) {
+              d.x0 = d.x;
+              d.y0 = d.y;
+            });
+          }
 
-  // Transition links to their new position.
-  link.transition()
-      .duration(duration)
-      .attr("d", diagonal);
+          // Toggle children on click.
+          function click(d) {
+            if (d.children) {
+              d._children = d.children;
+              d.children = null;
+            } else {
+              d.children = d._children;
+              d._children = null;
+            }
+            update(d);
+          }
 
-  // Transition exiting nodes to the parent's new position.
-  link.exit().transition()
-      .duration(duration)
-      .attr("d", function(d) {
-        var o = {x: source.x, y: source.y};
-        return diagonal({source: o, target: o});
-      })
-      .remove();
+          function color(d) {
+            if (d.value > 5) {return "red";}
+            else if (d.value < 5 || d.value == "ZERO") {return "green";}
+            else {return d._children ? "#3182bd" : d.children ? "#c6dbef" : "#fd8d3c";}
+            //return d._children ? "#3182bd" : d.children ? "#c6dbef" : "#fd8d3c";
+          }
 
-  // Stash the old positions for transition.
-  nodes.forEach(function(d) {
-    d.x0 = d.x;
-    d.y0 = d.y;
-  });
-}
 
-// Toggle children on click.
-function click(d) {
-  if (d.children) {
-    d._children = d.children;
-    d.children = null;
-  } else {
-    d.children = d._children;
-    d._children = null;
-  }
-  update(d);
-}
-
-function color(d) {
-  if (d.value > 5) {return "red";}
-  else if (d.value < 5 || d.value == "ZERO") {return "green";}
-  else {return d._children ? "#3182bd" : d.children ? "#c6dbef" : "#fd8d3c";}
-  //return d._children ? "#3182bd" : d.children ? "#c6dbef" : "#fd8d3c";
-}
-
-    </script>
+        </script>
   </body>
-</div>
-</div>
+  </div>
+  </div>
 </html>

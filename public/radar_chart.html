@@ -3,117 +3,106 @@
 <title>Visualizations Test</title>
 <!-- jQuery import from googleapis -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
-
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-
 <!-- Optional theme -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
-
 <!-- Latest compiled and minified JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-
 <link rel="stylesheet" href="https://rawgit.com/tpreusse/radar-chart-d3/master/src/radar-chart.css">
-
 <style>
-.radar-chart .area {
-  fill-opacity: 0.7;
-}
-.radar-chart.focus .area {
-  fill-opacity: 0.3;
-}
-.radar-chart.focus .area.focused {
-  fill-opacity: 0.9;
-}
-.area.germany, .germany .circle {
-  fill: #FFD700;
-  stroke: none;
-}
-.area.argentina, .argentina .circle {
-  fill: #ADD8E6;
-  stroke: none;
-}
-.radar-chart .axis .legend {
-	font-size: 20px;
-}
-.radar-chart .axis .legend.left {
-	text-anchor: center;
-}
-svg {
-  padding: 20px 0px 0px 360px;
-}
+  .radar-chart .area {
+    fill-opacity: 0.7;
+  }
+  .radar-chart.focus .area {
+    fill-opacity: 0.3;
+  }
+  .radar-chart.focus .area.focused {
+    fill-opacity: 0.9;
+  }
+  .area.germany, .germany .circle {
+    fill: #FFD700;
+    stroke: none;
+  }
+  .area.argentina, .argentina .circle {
+    fill: #ADD8E6;
+    stroke: none;
+  }
+  .radar-chart .axis .legend {
+    font-size: 20px;
+  }
+  .radar-chart .axis .legend.left {
+    text-anchor: center;
+  }
+  svg {
+    padding: 20px 0px 0px 360px;
+  }
 </style>
 <body>
   <nav class="navbar navbar-default navbar-static-top">
-  <div class="container">
-    <a href="https://github.com/alvarofernandoms/visualizationsTest"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/a6677b08c955af8400f44c6298f40e7d19cc5b2d/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677261795f3664366436642e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png"></a>
-    <a class="navbar-brand" href="/">Visualization Test</a>
-    <ul class="nav navbar-nav navbar-left">
-      <li class="dropdown">
+    <div class="container">
+      <a href="https://github.com/alvarofernandoms/visualizationsTest"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/a6677b08c955af8400f44c6298f40e7d19cc5b2d/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677261795f3664366436642e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png"></a>
+      <a class="navbar-brand" href="/">Visualization Test</a>
+      <ul class="nav navbar-nav navbar-left">
+        <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Available <span class="caret"></span></a>
           <ul class="dropdown-menu">
             <li><a href="radar_chart">Random Radar Chart by Thomas Preusse (adapted)</a></li>
             <li><a href="node_link_tree">Node Link Tree by Mike Bostock (adapted)</a></li>
             <li><a href="node_link_with_interation">Node Link With Interation by Lars Kotthoff (adapted)</a></li>
           </ul>
-      </li>
+        </li>
       </ul>
     </div>
   </nav>
+  <script src="../d3/d3.js"></script>
+  <script src="https://rawgit.com/tpreusse/radar-chart-d3/master/src/radar-chart.js"></script>
+  <script>
+    RadarChart.defaultConfig.color = function() {};
+    RadarChart.defaultConfig.radius = 3;
+    RadarChart.defaultConfig.w = 600;
+    RadarChart.defaultConfig.h = 600;
+  </script>
+  <span></span>
+  <script>
+    var data = [
+      {
+        className: 'germany', // optional can be used for styling
+        axes: [
+          {axis: "number of methods", value: 30},
+          {axis: "number of public methods", value: 30},
+          {axis: "total number of modules", value: 30}
+        ]
+      }
+    ];
+    function randomDataset() {
+      return data.map(function(d) {
+        return {
+          className: d.className,
+          axes: d.axes.map(function(axis) {
+            return {axis: axis.axis, value: Math.ceil(Math.random() * 10)};
+          })
+        };
+      });
+    }
+  </script>
+  <script>
+    var chart = RadarChart.chart();
+    var cfg = chart.config(); // retrieve default config
+    var svg = d3.select('body').append('svg')
+      .attr('width', cfg.w + cfg.w + 50)
+      .attr('height', cfg.h + cfg.h / 4);
+    svg.append('g').classed('single', 1).datum(randomDataset()).call(chart);
 
-<script src="../d3/d3.js"></script>
-<script src="https://rawgit.com/tpreusse/radar-chart-d3/master/src/radar-chart.js"></script>
-
-<script>
-RadarChart.defaultConfig.color = function() {};
-RadarChart.defaultConfig.radius = 3;
-RadarChart.defaultConfig.w = 600;
-RadarChart.defaultConfig.h = 600;
-</script>
-
-<span></span>
-
-<script>
-var data = [
-  {
-    className: 'germany', // optional can be used for styling
-    axes: [
-      {axis: "number of methods", value: 30},
-      {axis: "number of public methods", value: 30},
-      {axis: "total number of modules", value: 30}
-    ]
-  }
-];
-function randomDataset() {
-  return data.map(function(d) {
-    return {
-      className: d.className,
-      axes: d.axes.map(function(axis) {
-        return {axis: axis.axis, value: Math.ceil(Math.random() * 10)};
-      })
-    };
-  });
-}
-</script>
-
-<script>
-var chart = RadarChart.chart();
-var cfg = chart.config(); // retrieve default config
-var svg = d3.select('body').append('svg')
-  .attr('width', cfg.w + cfg.w + 50)
-  .attr('height', cfg.h + cfg.h / 4);
-svg.append('g').classed('single', 1).datum(randomDataset()).call(chart);
-
-// many radars
-chart.config({w: cfg.w / 4, h: cfg.h / 4, axisText: false, levels: 0, circles: false});
-cfg = chart.config();
-</script>
-
-<!--
-<h2>Simple single chart drawing</h2>
-<div class="chart-container"></div>
-<script>
-RadarChart.draw(".chart-container", data);
-</script>
--->
+    // many radars
+    chart.config({w: cfg.w / 4, h: cfg.h / 4, axisText: false, levels: 0, circles: false});
+    cfg = chart.config();
+  </script>
+  <!--
+    <h2>Simple single chart drawing</h2>
+    <div class="chart-container"></div>
+    <script>
+    RadarChart.draw(".chart-container", data);
+    </script>
+    -->
 </body>
