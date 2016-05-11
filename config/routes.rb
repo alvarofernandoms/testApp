@@ -7,7 +7,7 @@ Rails.application.routes.draw do
   get '/', :to => redirect('/index')
   get 'radar_chart', :to => redirect('/radar_chart')
   get 'node_link_tree', :to => redirect('/node_link_tree')
-  get 'node_link_with_interation', :to => redirect('/node_link_with_interation')
+  get 'node_link_with_interaction', :to => redirect('/node_link_with_interaction')
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
