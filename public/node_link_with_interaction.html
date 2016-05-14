@@ -57,7 +57,7 @@
               i = 0,
               barHeight = 20,
               barWidth = w * .8,
-              duration = 400,
+              duration = 100,
               root;
 
           var tree = d3.layout.tree()
@@ -178,11 +178,25 @@
           // Toggle children on click.
           function click(d) {
             if (d.children) {
+              // console.log(d.children);
               d._children = d.children;
               d.children = null;
             } else {
+              //console.log(d[0]);
+              //console.log(d._children[0]._children[0]._children);
               d.children = d._children;
               d._children = null;
+              //console.log(d.children[0]._children);
+              //d._children = null;
+              //function toggleAll(d) {
+                //alert("DEBUG: toggleAll");
+                //if (d._children) {
+                  //alert("DEBUG: if");
+                  //d.children.forEach(toggleAll);
+                  //click(d);
+                //}
+              //}
+              //d.children.forEach(toggleAll);
             }
             update(d);
           }
