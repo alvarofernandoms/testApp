@@ -83,8 +83,22 @@
           d3.json("data_to_interaction.json", function(json) {
             json.x0 = 0;
             json.y0 = 0;
+            root = json;
+
+            function toggleAll(d) {
+              if (d.children) {
+                d.children.forEach(toggleAll);
+                click(d);
+              }
+            }
+
+            // Init the display to show a node (for now).
+            root.children.forEach(toggleAll);
+            click(root.children[1]);
+
             moveChildren(json);
-            update(root = json);
+            update(root);
+
           });
 
           function update(source) {
