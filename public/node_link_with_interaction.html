@@ -50,6 +50,9 @@
     </nav>
     <div class="container">
       <div class="jumbotron">
+        <div class="explanation">
+          <p>Dica: clique nos retângulos para expandir ou contrair. :)</p>
+        </div>
         <div id="chart"></div>
         <script type="text/javascript">
           var w = 960,
@@ -57,7 +60,7 @@
               i = 0,
               barHeight = 20,
               barWidth = w * .8,
-              duration = 100,
+              duration = 150,
               root;
 
           var tree = d3.layout.tree()
@@ -99,12 +102,7 @@
             click(root.children[0].children[0]);
             click(root.children[0].children[0].children[0]);
             click(root.children[0].children[0].children[0].children[0]);
-            click(root.children[0].children[0].children[0].children[1]);
-            click(root.children[0].children[0].children[0].children[2]);
-            click(root.children[0].children[0].children[0].children[0].children[0]);
-            click(root.children[0].children[0].children[0].children[1].children[0]);
-            click(root.children[0].children[0].children[0].children[2].children[0]);
-            click(root.children[0].children[0].children[0].children[0].children[1]);
+            click(root.children[0].children[0].children[0].children[3]);
 
             moveChildren(json);
             update(root);
@@ -202,25 +200,11 @@
           // Toggle children on click.
           function click(d) {
             if (d.children) {
-              // console.log(d.children);
               d._children = d.children;
               d.children = null;
             } else {
-              //console.log(d[0]);
-              //console.log(d._children[0]._children[0]._children);
               d.children = d._children;
               d._children = null;
-              //console.log(d.children[0]._children);
-              //d._children = null;
-              //function toggleAll(d) {
-                //alert("DEBUG: toggleAll");
-                //if (d._children) {
-                  //alert("DEBUG: if");
-                  //d.children.forEach(toggleAll);
-                  //click(d);
-                //}
-              //}
-              //d.children.forEach(toggleAll);
             }
             update(d);
           }
